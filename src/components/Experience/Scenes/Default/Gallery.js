@@ -39,6 +39,9 @@ export default class Gallery {
 
             const plane = new Plane(position, source.name);
             this.planes.push(plane);
+            
+            const staggerDelay = Math.random() * 0.5;
+            plane.playRevealAnimation(staggerDelay);
         })
 
         this.totalRows = Math.ceil(galleryTextures.length / this.COLUMNS);

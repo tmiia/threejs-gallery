@@ -2,6 +2,7 @@ import { PlaneGeometry, Mesh, ShaderMaterial, Vector3 } from "three";
 import Experience from "../../../Experience.js";
 import vertexShader from "./vertexShader.glsl";
 import fragmentShader from "./fragmentShader.glsl";
+import gsap from "gsap";
 
 export default class Plane {
     constructor(position = new Vector3(0, 0, 0), textureName = "galleryTexture01") {
@@ -33,6 +34,7 @@ export default class Plane {
             fragmentShader: fragmentShader,
             uniforms: {
                 uTexture: { value: this.texture },
+                uRevealProgress: { value: 0.0 },
             },
             transparent: true,
         })
@@ -58,13 +60,25 @@ export default class Plane {
             this.debugFolder.add(this.mesh.position, "x").name("positionX").min(-5).max(5).step(0.001);
             this.debugFolder.add(this.mesh.position, "y").name("positionY").min(-5).max(5).step(0.001);
             this.debugFolder.add(this.mesh.position, "z").name("positionZ").min(-5).max(5).step(0.001);
+            this.debugFolder.add(this.material.uniforms.uRevealProgress, "value").name("Reveal Progress").min(0).max(1).step(0.01);
         }
+    }
+    
+    playRevealAnimation(delay = 0) {
+        gsap.to(this.material.uniforms.uRevealProgress, {
+            value: 1.0,
+            duration: 0.75,
+            delay: delay,
+           ease: "sine.in"
+        });
     }
 
     update() {
     }
 
     destroy() {
+        gsap.killTweensOf(this.material.uniforms.uRevealProgress);
+        
         if (this.geometry) this.geometry.dispose();
         if (this.material) this.material.dispose();
         if (this.mesh) this.scene.remove(this.mesh);
