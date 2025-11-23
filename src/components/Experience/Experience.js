@@ -1,5 +1,6 @@
 import Camera from "./Camera";
 import Renderer from "./Renderer";
+import RaycastController from "./RaycastController";
 import SceneManager from "./Scenes/SceneManager.js";
 import DefaultScene from "./Scenes/Default/DefaultScene.js";
 import sources from "./sources.js";
@@ -27,6 +28,7 @@ export default class Experience {
     this.resources = new Resources(sources, this.data);
 
     this.camera = new Camera();
+    this.raycastController = new RaycastController();
     this.sceneManager = new SceneManager(this);
     this.sceneManager.setScene(DefaultScene);
     console.log(this.sceneManager);
@@ -61,6 +63,7 @@ export default class Experience {
   update() {
     this.sceneManager.update();
     this.camera.update();
+    this.raycastController.update();
     this.renderer.update(this.sceneManager.currentScene.scene);
   }
 
@@ -70,6 +73,10 @@ export default class Experience {
 
     if (this.sceneManager.currentScene) {
       this.sceneManager.currentScene.destroy();
+    }
+
+    if (this.raycastController) {
+      this.raycastController.destroy();
     }
 
     if (this.camera) {

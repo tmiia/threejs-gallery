@@ -41,6 +41,10 @@ export default class Gallery {
         })
 
         this.totalRows = Math.ceil(galleryTextures.length / this.COLUMNS);
+
+        if (this.experience.raycastController) {
+            this.experience.raycastController.setIntersectableObjects(this.planes);
+        }
     }
 
     calculateBoundaries() {
