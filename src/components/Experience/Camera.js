@@ -1,11 +1,13 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import Experience from "./Experience";
+import DragControls from "./DragControls";
 
 export default class Camera {
   constructor() {
     this.experience = new Experience();
     this.sizes = this.experience.sizes;
+    this.instance = null;
 
     // this.scene = this.experience.sceneManager.currentScene.scene;
 
@@ -30,6 +32,8 @@ export default class Camera {
     // this.controls = new OrbitControls(this.instance, this.canvas);
     // this.controls.enableDamping = true;
     // this.controls.enableZoom = false;
+
+    this.dragControls = new DragControls(this.instance);
   }
 
   resize() {
@@ -39,5 +43,14 @@ export default class Camera {
 
   update() {
     // this.controls.update();
+    if (this.dragControls) {
+      this.dragControls.update();
+    }
+  }
+
+  destroy() {
+    if (this.dragControls) {
+      this.dragControls.destroy();
+    }
   }
 }

@@ -11,6 +11,7 @@ export default class Gallery {
         this.planes = [];
 
         this.createGalleryPlanes();
+        this.calculateBoundaries();
     }
     
     createGalleryPlanes() {
@@ -18,26 +19,57 @@ export default class Gallery {
             source.name.includes("galleryTexture")
         );
 
-        const SPACING = 2;
-        const COLUMNS = 4;
+        this.SPACING = 2;
+        this.COLUMNS = 4;
         const DEPTH_MIN = -1.5;
         const DEPTH_MAX = 1.5;
 
         galleryTextures.forEach(( source, index ) => {
-            const row = Math.floor(index / COLUMNS);
-            const col = index % COLUMNS;
+            const row = Math.floor(index / this.COLUMNS);
+            const col = index % this.COLUMNS;
 
             const depth = DEPTH_MIN + Math.random() * (DEPTH_MAX - DEPTH_MIN);
 
             const position = new Vector3(
-                col * SPACING - (COLUMNS - 1) * SPACING * 0.5,
-                row * SPACING - Math.floor(galleryTextures.length / COLUMNS - 1) * SPACING * 0.5,
+                col * this.SPACING - (this.COLUMNS - 1) * this.SPACING * 0.5,
+                row * this.SPACING - Math.floor(galleryTextures.length / this.COLUMNS - 1) * this.SPACING * 0.5,
                 depth,
             )
 
             const plane = new Plane(position, source.name);
             this.planes.push(plane);
         })
+
+        this.totalRows = Math.ceil(galleryTextures.length / this.COLUMNS);
+    }
+
+    calculateBoundaries() {
+        const galleryWidth = (this.COLUMNS - 1) * this.SPACING;
+        const galleryHeight = (this.totalRows - 1) * this.SPACING;
+
+        const paddingX = 0.05;
+        const paddingY = 0.05;
+
+        const boundaries = {
+            minX: -galleryWidth / 2 - paddingX,
+            maxX: galleryWidth / 2 + paddingX,
+            minY: -galleryHeight / 2 - paddingY,
+            maxY: galleryHeight / 2 + paddingY,
+        };
+
+        if (this.experience.camera && this.experience.camera.dragControls) {
+            this.experience.camera.dragControls.setBoundaries(boundaries);
+        }
+
+        if (this.debug.active) {
+            console.log('Gallery boundaries:', boundaries);
+            console.log('Gallery dimensions:', { 
+                width: galleryWidth, 
+                height: galleryHeight,
+                columns: this.COLUMNS,
+                rows: this.totalRows
+            });
+        }
     }
 
     update() {

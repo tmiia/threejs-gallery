@@ -72,7 +72,11 @@ export default class Experience {
       this.sceneManager.currentScene.destroy();
     }
 
-    if (this.camera.controls) this.camera.controls.dispose();
+    if (this.camera) {
+      if (this.camera.controls) this.camera.controls.dispose();
+      if (this.camera.destroy) this.camera.destroy();
+    }
+    
     if (this.renderer.instance) this.renderer.instance.dispose();
 
     if (this.debug.active) this.debug.ui.destroy();
