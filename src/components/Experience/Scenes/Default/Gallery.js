@@ -7,6 +7,7 @@ export default class Gallery {
     constructor() {
         this.experience = new Experience();
         this.scene = this.experience.sceneManager.currentScene.scene;
+        this.sizes = this.experience.sizes;
         this.debug = this.experience.debug;
         this.planes = [];
 
@@ -19,7 +20,7 @@ export default class Gallery {
             source.name.includes("galleryTexture")
         );
 
-        this.SPACING = 2;
+        this.SPACING = this.sizes.isMobile ? 1.35 : 2;
         this.COLUMNS = 4;
         const DEPTH_MIN = -1.5;
         const DEPTH_MAX = 1.5;

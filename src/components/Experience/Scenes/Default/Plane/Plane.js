@@ -8,6 +8,7 @@ export default class Plane {
         this.experience = new Experience();
         this.scene = this.experience.sceneManager.currentScene.scene;
         this.debug = this.experience.debug;
+        this.sizes = this.experience.sizes;
         this.position = position;
         this.textureName = textureName;
         this.texture = this.experience.resources.items[this.textureName];
@@ -43,7 +44,9 @@ export default class Plane {
         this.mesh.rotation.z = 0;
         this.mesh.rotation.x = 0;
         this.mesh.rotation.y = 0;
-        this.mesh.scale.set(0.25, 0.25, 0.25);
+        
+        const scale = this.sizes.isMobile ? 0.15 : 0.25;
+        this.mesh.scale.set(scale, scale, scale);
 
         this.scene.add(this.mesh);
 
