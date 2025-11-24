@@ -1,4 +1,4 @@
-import { PlaneGeometry, Mesh, ShaderMaterial, Vector3 } from "three";
+import { PlaneGeometry, Mesh, ShaderMaterial, Vector3, Vector2 } from "three";
 import Experience from "../../../Experience.js";
 import vertexShader from "./vertexShader.glsl";
 import fragmentShader from "./fragmentShader.glsl";
@@ -37,9 +37,11 @@ export default class Plane {
             uniforms: {
                 uTexture: { value: this.texture },
                 uRevealProgress: { value: 0.0 },
-                uImageScale: { value: 1.0 },
+                uImageScale: { value: 1.3 },
                 uCameraPosition: { value: new Vector3() },
                 uCurvatureStrength: { value: 0.0 },
+                uParallaxOffset: { value: new Vector2() },
+                uParallaxStrength: { value: 0.08 },
             },
             transparent: true,
         })
@@ -67,6 +69,7 @@ export default class Plane {
             this.debugFolder.add(this.mesh.position, "z").name("positionZ").min(-5).max(5).step(0.001);
             this.debugFolder.add(this.material.uniforms.uRevealProgress, "value").name("Reveal Progress").min(0).max(1).step(0.01);
             this.debugFolder.add(this.material.uniforms.uCurvatureStrength, "value").name("Curvature Strength").min(0).max(2).step(0.01);
+            this.debugFolder.add(this.material.uniforms.uParallaxStrength, "value").name("Parallax Strength").min(0).max(0.5).step(0.001);
         }
     }
     
@@ -75,7 +78,7 @@ export default class Plane {
             value: 1.0,
             duration: 0.75,
             delay: delay,
-           ease: "sine.in"
+            ease: "sine.in"
         });
     }
 
@@ -90,6 +93,11 @@ export default class Plane {
             const targetCurvature = isGrabbing ? 0.5 : 0.0;
             this.material.uniforms.uCurvatureStrength.value += 
                 (targetCurvature - this.material.uniforms.uCurvatureStrength.value) * 0.03;
+            
+            const displacementX = (dragControls.targetPosition.x - this.experience.camera.instance.position.x);
+            const displacementY = (dragControls.targetPosition.y - this.experience.camera.instance.position.y);
+            
+            this.material.uniforms.uParallaxOffset.value.set(-displacementX, displacementY);
         }
     }
 
