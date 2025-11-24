@@ -1,0 +1,142 @@
+@layer base {
+  :root {
+    --grid-columns: 4;
+    --grid-gutter: 1rem;
+    --container-padding: 1rem;
+    --container-max-width: 1440px;
+
+    @media (min-width: 768px) {
+      --grid-columns: 4;
+      --grid-gutter: 1.5rem;
+      --container-padding: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      --grid-columns: 8;
+      --grid-gutter: 0.5rem;
+      --container-padding: 0.5rem;
+    }
+  }
+}
+
+@layer components {
+  .container-grid {
+    width: 100%;
+    height: 100%;
+    /* max-width: var(--container-max-width); */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), 1fr);
+    gap: var(--grid-gutter);
+  }
+
+  .container-grid-full {
+    width: 100%;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+  }
+}
+
+@layer utilities {
+  .grid-layout {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), 1fr);
+    gap: var(--grid-gutter);
+  }
+
+  .grid-layout-no-gap {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), 1fr);
+    gap: 0;
+  }
+
+  .col-span-full {
+    grid-column: 1 / -1;
+  }
+
+  .col-span-1 { grid-column: span 1; }
+  .col-span-2 { grid-column: span 2; }
+  .col-span-3 { grid-column: span 3; }
+  .col-span-4 { grid-column: span 4; }
+  .col-span-5 { grid-column: span 5; }
+  .col-span-6 { grid-column: span 6; }
+  .col-span-7 { grid-column: span 7; }
+  .col-span-8 { grid-column: span 8; }
+  .col-span-9 { grid-column: span 9; }
+  .col-span-10 { grid-column: span 10; }
+  .col-span-11 { grid-column: span 11; }
+  .col-span-12 { grid-column: span 12; }
+
+  .gap-grid { gap: var(--grid-gutter); }
+  .gap-x-grid { column-gap: var(--grid-gutter); }
+  .gap-y-grid { row-gap: var(--grid-gutter); }
+
+  .grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--grid-gutter);
+  }
+
+  .grid-auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--grid-gutter);
+  }
+}
+
+@layer utilities {
+  @media (min-width: 768px) {
+    .md\:col-span-full { grid-column: 1 / -1; }
+    .md\:col-span-1 { grid-column: span 1; }
+    .md\:col-span-2 { grid-column: span 2; }
+    .md\:col-span-3 { grid-column: span 3; }
+    .md\:col-span-4 { grid-column: span 4; }
+    .md\:col-span-5 { grid-column: span 5; }
+    .md\:col-span-6 { grid-column: span 6; }
+    .md\:col-span-7 { grid-column: span 7; }
+    .md\:col-span-8 { grid-column: span 8; }
+
+    .md\:col-start-1 { grid-column-start: 1; }
+    .md\:col-start-2 { grid-column-start: 2; }
+    .md\:col-start-3 { grid-column-start: 3; }
+    .md\:col-start-4 { grid-column-start: 4; }
+    .md\:col-start-5 { grid-column-start: 5; }
+    .md\:col-start-6 { grid-column-start: 6; }
+    .md\:col-start-7 { grid-column-start: 7; }
+    .md\:col-start-8 { grid-column-start: 8; }
+  }
+}
+
+@layer utilities {
+  @media (min-width: 1024px) {
+    .lg\:col-span-full { grid-column: 1 / -1; }
+    .lg\:col-span-1 { grid-column: span 1; }
+    .lg\:col-span-2 { grid-column: span 2; }
+    .lg\:col-span-3 { grid-column: span 3; }
+    .lg\:col-span-4 { grid-column: span 4; }
+    .lg\:col-span-5 { grid-column: span 5; }
+    .lg\:col-span-6 { grid-column: span 6; }
+    .lg\:col-span-7 { grid-column: span 7; }
+    .lg\:col-span-8 { grid-column: span 8; }
+    .lg\:col-span-9 { grid-column: span 9; }
+    .lg\:col-span-10 { grid-column: span 10; }
+    .lg\:col-span-11 { grid-column: span 11; }
+    .lg\:col-span-12 { grid-column: span 12; }
+
+    .lg\:col-start-1 { grid-column-start: 1; }
+    .lg\:col-start-2 { grid-column-start: 2; }
+    .lg\:col-start-3 { grid-column-start: 3; }
+    .lg\:col-start-4 { grid-column-start: 4; }
+    .lg\:col-start-5 { grid-column-start: 5; }
+    .lg\:col-start-6 { grid-column-start: 6; }
+    .lg\:col-start-7 { grid-column-start: 7; }
+    .lg\:col-start-8 { grid-column-start: 8; }
+    .lg\:col-start-9 { grid-column-start: 9; }
+    .lg\:col-start-10 { grid-column-start: 10; }
+    .lg\:col-start-11 { grid-column-start: 11; }
+    .lg\:col-start-12 { grid-column-start: 12; }
+  }
+}

@@ -13,6 +13,7 @@
     "@types/three": "latest",
     "gsap": "^3.13.0",
     "lil-gui": "latest",
+    "motion": "^12.23.24",
     "next": "latest",
     "postprocessing": "latest",
     "react": "latest",

@@ -1,8 +1,12 @@
 @import "tailwindcss";
+@import "./styles/grid.css";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #1a2332;
+  --secondary: #f8f9fa;
+  --accent: #8ace00;
 }
 
 @theme inline {
@@ -16,6 +20,9 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --primary: #1a2332;
+    --secondary: #1e1e1e;
+    --accent: #8ace00;
   }
 }
 
