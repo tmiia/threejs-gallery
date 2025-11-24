@@ -25,7 +25,7 @@ export default class DragControls {
     this.targetFOV = this.baseFOV;
     this.fovSmoothness = 0.05;
     this.fovResetTimeout = null;
-    this.fovResetDelay = 250;
+    this.fovResetDelay = 150;
 
     this.boundaries = {
       minX: -3,
