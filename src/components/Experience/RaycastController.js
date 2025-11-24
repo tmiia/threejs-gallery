@@ -80,7 +80,8 @@ export default class RaycastController {
     
     const originalScale = this.originalScales.get(mesh);
     if (originalScale) {
-      mesh.userData.targetScale = originalScale.clone().multiplyScalar(this.hoverScale);
+      // mesh.userData.targetScale = originalScale.clone().multiplyScalar(this.hoverScale);
+      mesh.userData.targetImageScale = 1.1;
       mesh.userData.isHovered = true;
     }
   }
@@ -92,15 +93,18 @@ export default class RaycastController {
     
     const originalScale = this.originalScales.get(mesh);
     if (originalScale) {
-      mesh.userData.targetScale = originalScale.clone();
+      // mesh.userData.targetScale = originalScale.clone();
+      mesh.userData.targetImageScale = 1.0;
       mesh.userData.isHovered = false;
     }
   }
 
   update() {
     this.intersectableObjects.forEach(mesh => {
-      if (mesh.userData.targetScale) {
-        mesh.scale.lerp(mesh.userData.targetScale, this.scaleSpeed);
+      if (mesh.userData.targetImageScale != undefined && mesh?.material?.uniforms.uImageScale) {
+        const current = mesh.material.uniforms.uImageScale.value;
+        const target = mesh.userData.targetImageScale;
+        mesh.material.uniforms.uImageScale.value += (target - current) * this.scaleSpeed;
       }
     });
   }

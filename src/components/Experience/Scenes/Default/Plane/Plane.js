@@ -35,6 +35,7 @@ export default class Plane {
             uniforms: {
                 uTexture: { value: this.texture },
                 uRevealProgress: { value: 0.0 },
+                uImageScale: { value: 1.0 },
             },
             transparent: true,
         })
