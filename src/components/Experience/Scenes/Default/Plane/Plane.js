@@ -92,7 +92,7 @@ export default class Plane {
             const isGrabbing = dragControls.targetFOV === dragControls.grabFOV;
             const targetCurvature = isGrabbing ? 0.5 : 0.0;
             this.material.uniforms.uCurvatureStrength.value += 
-                (targetCurvature - this.material.uniforms.uCurvatureStrength.value) * 0.03;
+                (targetCurvature - this.material.uniforms.uCurvatureStrength.value) * 0.02;
             
             const displacementX = (dragControls.targetPosition.x - this.experience.camera.instance.position.x);
             const displacementY = (dragControls.targetPosition.y - this.experience.camera.instance.position.y);

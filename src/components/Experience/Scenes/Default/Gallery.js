@@ -27,8 +27,8 @@ export default class Gallery {
 
         this.SPACING = this.sizes.isMobile ? 1.35 : 2;
         this.COLUMNS = 4;
-        const DEPTH_MIN = -1.5;
-        const DEPTH_MAX = 1.5;
+        const DEPTH_MIN = -1.2;
+        const DEPTH_MAX = 1.1;
 
         for (let i = 0; i < galleryTextures.length; i++) {
         }
