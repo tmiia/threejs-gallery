@@ -24,8 +24,10 @@ export default class Plane {
         
         const baseHeight = 6;
         const width = baseHeight * aspectRatio;
+        const widthSegments = 32;
+        const heightSegments = 32;
         
-        this.geometry = new PlaneGeometry(width, baseHeight);
+        this.geometry = new PlaneGeometry(width, baseHeight, widthSegments, heightSegments);
     }
 
     setMaterial() {
@@ -36,6 +38,8 @@ export default class Plane {
                 uTexture: { value: this.texture },
                 uRevealProgress: { value: 0.0 },
                 uImageScale: { value: 1.0 },
+                uCameraPosition: { value: new Vector3() },
+                uCurvatureStrength: { value: 0.0 },
             },
             transparent: true,
         })
@@ -62,6 +66,7 @@ export default class Plane {
             this.debugFolder.add(this.mesh.position, "y").name("positionY").min(-5).max(5).step(0.001);
             this.debugFolder.add(this.mesh.position, "z").name("positionZ").min(-5).max(5).step(0.001);
             this.debugFolder.add(this.material.uniforms.uRevealProgress, "value").name("Reveal Progress").min(0).max(1).step(0.01);
+            this.debugFolder.add(this.material.uniforms.uCurvatureStrength, "value").name("Curvature Strength").min(0).max(2).step(0.01);
         }
     }
     
@@ -75,6 +80,16 @@ export default class Plane {
     }
 
     update() {
+        if (this.experience.camera?.instance) {
+            this.material.uniforms.uCameraPosition.value.copy(this.experience.camera.instance.position);
+        }
+
+        const dragControls = this.experience.camera?.dragControls;
+        if (dragControls) {
+            const targetCurvature = dragControls.isDragging ? 0.5 : 0.0;
+            this.material.uniforms.uCurvatureStrength.value += 
+                (targetCurvature - this.material.uniforms.uCurvatureStrength.value) * 0.1;
+        }
     }
 
     destroy() {
