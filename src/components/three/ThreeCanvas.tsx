@@ -49,7 +49,7 @@ const ThreeJSExperience = () => {
         id="scrollContainer"
         style={{
           width: "100%",
-          height: "100vh",
+          height: "100dvh",
           position: "relative",
         }}
       >
