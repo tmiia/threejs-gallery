@@ -29,9 +29,9 @@ export default class DragControls {
     this.setupEventListeners();
   }
 
-  setBoundaries(boundaries) {
-    this.boundaries = boundaries;
-  }
+  // setBoundaries(boundaries) {
+  //   this.boundaries = boundaries;
+  // }
 
   setupEventListeners() {
     this.canvas.addEventListener("mousedown", this.onMouseDown.bind(this));
@@ -130,14 +130,14 @@ export default class DragControls {
     this.targetPosition.x += moveX;
     this.targetPosition.y += moveY;
 
-    this.targetPosition.x = Math.max(
-      this.boundaries.minX,
-      Math.min(this.boundaries.maxX, this.targetPosition.x)
-    );
-    this.targetPosition.y = Math.max(
-      this.boundaries.minY,
-      Math.min(this.boundaries.maxY, this.targetPosition.y)
-    );
+    // this.targetPosition.x = Math.max(
+    //   this.boundaries.minX,
+    //   Math.min(this.boundaries.maxX, this.targetPosition.x)
+    // );
+    // this.targetPosition.y = Math.max(
+    //   this.boundaries.minY,
+    //   Math.min(this.boundaries.maxY, this.targetPosition.y)
+    // );
   }
 
   update() {

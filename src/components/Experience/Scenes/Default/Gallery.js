@@ -1,6 +1,6 @@
 import Experience from "../../Experience.js";
 import Plane from "./Plane/Plane.js";
-import { Vector3 } from "three";
+import { Vector3, Group } from "three";
 import sources from "../../sources.js";
 
 export default class Gallery {
@@ -10,9 +10,14 @@ export default class Gallery {
         this.sizes = this.experience.sizes;
         this.debug = this.experience.debug;
         this.planes = [];
+        this.depthPattern = [];
+        this.grid_width = 0;
+        this.grid_height = 0;
+        this.all_planes = [];
 
         this.createGalleryPlanes();
-        this.calculateBoundaries();
+        // this.calculateBoundaries();
+        this.createGridDuplication();
     }
     
     createGalleryPlanes() {
@@ -25,11 +30,15 @@ export default class Gallery {
         const DEPTH_MIN = -1.5;
         const DEPTH_MAX = 1.5;
 
+        for (let i = 0; i < galleryTextures.length; i++) {
+        }
+        
         galleryTextures.forEach(( source, index ) => {
+            const depth = DEPTH_MIN + Math.random() * (DEPTH_MAX - DEPTH_MIN);
+            this.depthPattern.push(depth);
+
             const row = Math.floor(index / this.COLUMNS);
             const col = index % this.COLUMNS;
-
-            const depth = DEPTH_MIN + Math.random() * (DEPTH_MAX - DEPTH_MIN);
 
             const position = new Vector3(
                 col * this.SPACING - (this.COLUMNS - 1) * this.SPACING * 0.5,
@@ -45,10 +54,69 @@ export default class Gallery {
         })
 
         this.totalRows = Math.ceil(galleryTextures.length / this.COLUMNS);
+    }
+
+    createGridDuplication() {
+        this.grid_width = this.COLUMNS * this.SPACING;
+        this.grid_height = this.totalRows * this.SPACING;
+    
+        this.gallery_group = [];
+    
+        for (let offsetY = -1; offsetY <= 1; offsetY++) {
+            for (let offsetX = -1; offsetX <= 1; offsetX++) {
+                const group = new Group();
+                
+                group.position.set(
+                    offsetX * this.grid_width,
+                    offsetY * this.grid_height,
+                    0
+                );
+    
+                this.planes.forEach(plane => {
+                    const clone = plane.mesh.clone();
+                    group.add(clone);
+                    this.all_planes.push(clone);
+                });
+    
+                this.scene.add(group);
+                
+                this.gallery_group.push({
+                    offset: { x: offsetX, y: offsetY },
+                    group: group
+                });
+            }
+        }
 
         if (this.experience.raycastController) {
-            this.experience.raycastController.setIntersectableObjects(this.planes);
+            this.experience.raycastController.setIntersectableObjects(this.all_planes);
         }
+    }
+
+    setPosition() {
+        const currentCameraPosition = this.experience.camera.instance.position;
+    
+        this.gallery_group.forEach(group => {
+            const relativeX = group.offset.x * this.grid_width - currentCameraPosition.x;
+            const relativeY = group.offset.y * this.grid_height - currentCameraPosition.y;
+            
+            if (relativeX < -this.grid_width * 1.5) {
+                group.offset.x += 3;
+            } else if (relativeX > this.grid_width * 1.5) {
+                group.offset.x -= 3;
+            }
+    
+            if (relativeY < -this.grid_height * 1.5) {
+                group.offset.y += 3;
+            } else if (relativeY > this.grid_height * 1.5) {
+                group.offset.y -= 3;
+            }
+    
+            group.group.position.set(
+                group.offset.x * this.grid_width,
+                group.offset.y * this.grid_height,
+                0
+            );
+        });
     }
 
     calculateBoundaries() {
@@ -84,6 +152,8 @@ export default class Gallery {
         this.planes.forEach(plane => {
             plane.update();
         })
+
+        this.setPosition();
     }
 
     destroy() {
