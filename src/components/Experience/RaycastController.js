@@ -16,7 +16,7 @@ export default class RaycastController {
 
     this.originalScales = new Map();
     this.hoverScale = 1.05;
-    this.scaleSpeed = 0.1;
+    this.scaleSpeed = 0.03;
 
     this.setupEventListeners();
   }
