@@ -41,7 +41,7 @@ export default class Plane {
                 uCameraPosition: { value: new Vector3() },
                 uCurvatureStrength: { value: 0.0 },
                 uParallaxOffset: { value: new Vector2() },
-                uParallaxStrength: { value: 0.05 },
+                uParallaxStrength: { value: 0.01 },
             },
             transparent: true,
         })
