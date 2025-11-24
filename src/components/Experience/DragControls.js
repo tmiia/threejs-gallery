@@ -24,6 +24,8 @@ export default class DragControls {
     this.currentFOV = this.baseFOV;
     this.targetFOV = this.baseFOV;
     this.fovSmoothness = 0.05;
+    this.fovResetTimeout = null;
+    this.fovResetDelay = 250;
 
     this.boundaries = {
       minX: -3,
@@ -61,6 +63,11 @@ export default class DragControls {
     this.velocity.set(0, 0);
     this.canvas.style.cursor = "grabbing";
     
+    if (this.fovResetTimeout) {
+      clearTimeout(this.fovResetTimeout);
+      this.fovResetTimeout = null;
+    }
+    
     this.targetFOV = this.grabFOV;
   }
 
@@ -92,7 +99,14 @@ export default class DragControls {
     this.isDragging = false;
     this.canvas.style.cursor = "grab";
     
-    this.targetFOV = this.baseFOV;
+    if (this.fovResetTimeout) {
+      clearTimeout(this.fovResetTimeout);
+    }
+    
+    this.fovResetTimeout = setTimeout(() => {
+      this.targetFOV = this.baseFOV;
+      this.fovResetTimeout = null;
+    }, this.fovResetDelay);
   }
 
   onTouchStart(event) {
@@ -103,6 +117,11 @@ export default class DragControls {
         y: event.touches[0].clientY,
       };
       this.velocity.set(0, 0);
+      
+      if (this.fovResetTimeout) {
+        clearTimeout(this.fovResetTimeout);
+        this.fovResetTimeout = null;
+      }
       
       this.targetFOV = this.grabFOV;
     }
@@ -134,7 +153,14 @@ export default class DragControls {
   onTouchEnd() {
     this.isDragging = false;
     
-    this.targetFOV = this.baseFOV;
+    if (this.fovResetTimeout) {
+      clearTimeout(this.fovResetTimeout);
+    }
+    
+    this.fovResetTimeout = setTimeout(() => {
+      this.targetFOV = this.baseFOV;
+      this.fovResetTimeout = null;
+    }, this.fovResetDelay);
   }
 
   updateCameraTarget(deltaX, deltaY) {
@@ -166,6 +192,11 @@ export default class DragControls {
   }
 
   destroy() {
+    if (this.fovResetTimeout) {
+      clearTimeout(this.fovResetTimeout);
+      this.fovResetTimeout = null;
+    }
+    
     this.canvas.removeEventListener("mousedown", this.onMouseDown.bind(this));
     this.canvas.removeEventListener("mousemove", this.onMouseMove.bind(this));
     this.canvas.removeEventListener("mouseup", this.onMouseUp.bind(this));
