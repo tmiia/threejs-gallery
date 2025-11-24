@@ -81,7 +81,7 @@ export default class RaycastController {
     const originalScale = this.originalScales.get(mesh);
     if (originalScale) {
       // mesh.userData.targetScale = originalScale.clone().multiplyScalar(this.hoverScale);
-      mesh.userData.targetImageScale = 1.1;
+      mesh.userData.targetImageScale = 1.45;
       mesh.userData.isHovered = true;
     }
   }
@@ -94,7 +94,7 @@ export default class RaycastController {
     const originalScale = this.originalScales.get(mesh);
     if (originalScale) {
       // mesh.userData.targetScale = originalScale.clone();
-      mesh.userData.targetImageScale = 1.0;
+      mesh.userData.targetImageScale = 1.3;
       mesh.userData.isHovered = false;
     }
   }
