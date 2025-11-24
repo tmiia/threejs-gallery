@@ -19,6 +19,12 @@ export default class DragControls {
 
     this.sensitivity = 0.005;
 
+    this.baseFOV = 20;
+    this.grabFOV = 26;
+    this.currentFOV = this.baseFOV;
+    this.targetFOV = this.baseFOV;
+    this.fovSmoothness = 0.05;
+
     this.boundaries = {
       minX: -3,
       maxX: 3,
@@ -54,6 +60,8 @@ export default class DragControls {
     };
     this.velocity.set(0, 0);
     this.canvas.style.cursor = "grabbing";
+    
+    this.targetFOV = this.grabFOV;
   }
 
   onMouseMove(event) {
@@ -83,6 +91,8 @@ export default class DragControls {
   onMouseUp() {
     this.isDragging = false;
     this.canvas.style.cursor = "grab";
+    
+    this.targetFOV = this.baseFOV;
   }
 
   onTouchStart(event) {
@@ -93,6 +103,8 @@ export default class DragControls {
         y: event.touches[0].clientY,
       };
       this.velocity.set(0, 0);
+      
+      this.targetFOV = this.grabFOV;
     }
   }
 
@@ -121,6 +133,8 @@ export default class DragControls {
 
   onTouchEnd() {
     this.isDragging = false;
+    
+    this.targetFOV = this.baseFOV;
   }
 
   updateCameraTarget(deltaX, deltaY) {
@@ -141,6 +155,10 @@ export default class DragControls {
   }
 
   update() {
+    this.currentFOV += (this.targetFOV - this.currentFOV) * this.fovSmoothness;
+    this.camera.fov = this.currentFOV;
+    this.camera.updateProjectionMatrix();
+
     this.camera.position.x +=
       (this.targetPosition.x - this.camera.position.x) * this.smoothing;
     this.camera.position.y +=
