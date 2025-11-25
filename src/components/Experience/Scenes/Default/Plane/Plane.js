@@ -57,7 +57,7 @@ export default class Plane {
         const scale = this.sizes.isMobile ? 0.15 : 0.25;
         this.mesh.scale.set(scale, scale, scale);
 
-        this.scene.add(this.mesh);
+        // this.scene.add(this.mesh);
 
         // Debug
         if (this.debug.active) {
@@ -106,7 +106,7 @@ export default class Plane {
         
         if (this.geometry) this.geometry.dispose();
         if (this.material) this.material.dispose();
-        if (this.mesh) this.scene.remove(this.mesh);
+        // if (this.mesh) this.scene.remove(this.mesh);
         if (this.debugFolder) this.debug.ui.removeFolder(this.debugFolder);
     }
 }

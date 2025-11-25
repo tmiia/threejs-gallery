@@ -157,9 +157,22 @@ export default class Gallery {
     }
 
     destroy() {
+        if (this.gallery_group) {
+            this.gallery_group.forEach(({ group }) => {
+                group.children.forEach(child => {
+                    if (child.geometry) child.geometry.dispose();
+                    if (child.material) child.material.dispose();
+                });
+                group.clear();
+                this.scene.remove(group);
+            });
+            this.gallery_group = [];
+        }
+        
         this.planes.forEach(plane => {
             plane.destroy();
         })
         this.planes = [];
+        this.all_planes = [];
     }
 }
