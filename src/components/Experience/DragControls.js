@@ -34,7 +34,13 @@ export default class DragControls {
       maxY: 3,
     };
 
+    this.raycastController = null;
+
     this.setupEventListeners();
+  }
+
+  setRaycastController(raycastController) {
+    this.raycastController = raycastController;
   }
 
   // setBoundaries(boundaries) {
@@ -55,6 +61,10 @@ export default class DragControls {
   }
 
   onMouseDown(event) {
+    if (this.raycastController && this.raycastController.hoveredObject) {
+      return;
+    }
+
     this.isDragging = true;
     this.previousMousePosition = {
       x: event.clientX,
@@ -73,7 +83,9 @@ export default class DragControls {
 
   onMouseMove(event) {
     if (!this.isDragging) {
-      this.canvas.style.cursor = "grab";
+      if (!this.raycastController || !this.raycastController.hoveredObject) {
+        this.canvas.style.cursor = "grab";
+      }
       return;
     }
 
@@ -97,7 +109,9 @@ export default class DragControls {
 
   onMouseUp() {
     this.isDragging = false;
-    this.canvas.style.cursor = "grab";
+    if (!this.raycastController || !this.raycastController.hoveredObject) {
+      this.canvas.style.cursor = "grab";
+    }
     
     if (this.fovResetTimeout) {
       clearTimeout(this.fovResetTimeout);
@@ -111,6 +125,10 @@ export default class DragControls {
 
   onTouchStart(event) {
     if (event.touches.length === 1) {
+      if (this.raycastController && this.raycastController.hoveredObject) {
+        return;
+      }
+
       this.isDragging = true;
       this.previousMousePosition = {
         x: event.touches[0].clientX,

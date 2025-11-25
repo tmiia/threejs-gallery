@@ -29,6 +29,11 @@ export default class Experience {
 
     this.camera = new Camera();
     this.raycastController = new RaycastController();
+    
+    if (this.camera.dragControls) {
+      this.camera.dragControls.setRaycastController(this.raycastController);
+    }
+    
     this.sceneManager = new SceneManager(this);
     this.sceneManager.setScene(DefaultScene);
     console.log(this.sceneManager);
